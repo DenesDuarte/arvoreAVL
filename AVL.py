@@ -31,6 +31,25 @@ class AVL:
         if alt_direita > alt_esquerda:
             return alt_direita + 1
         return alt_esquerda + 1
+    
+    def min(self, nodo= None):
+        if nodo == None:
+            nodo = self.raiz
+        if nodo is None:
+            return nodo
+        while nodo.esquerda:
+            nodo = nodo.esquerda
+        return nodo.valor
+    
+    def max(self, nodo= None):
+        if nodo == None:
+            nodo = self.raiz
+        if nodo is None:
+            return nodo
+        while nodo.direita:
+            nodo = nodo.direita
+        return nodo.valor
+
 
     def exibir_arvore_tkinter(self):
             root = Tk()
@@ -62,5 +81,7 @@ if __name__ == "__main__":
     arvore.inserir(-2)
 
     # print( arvore.altura(arvore.raiz.esquerda))
+    print(arvore.min())
+    print(arvore.max())
 
     # arvore.exibir_arvore_tkinter()
