@@ -19,6 +19,28 @@ class AVL:
             nodo.direita = self._inserir(nodo.direita, valor)
         return nodo
     
+    def remover(self, value, nodo=None):
+        if nodo is None:
+            # return nodo
+            nodo = self.raiz
+        if value < nodo.valor:
+            nodo.esquerda = self.remover(nodo.esquerda, value)
+        elif value > nodo.valor:
+            nodo.direita = self.remover(nodo.direita, value)
+        else:
+            if nodo.esquerda is None:
+                temp = nodo.direita
+                nodo = None
+                return temp
+            elif nodo.direita is None:
+                temp = nodo.esquerda
+                root = None
+                return temp
+            temp = self.min(nodo.direita)
+            nodo.valor = temp.valor
+            nodo.direita = self.deleteNode(nodo.direita, temp.valor)
+        return nodo
+
     def altura(self, nodo = None):
         if nodo is None:
             nodo = self.raiz
@@ -81,7 +103,8 @@ if __name__ == "__main__":
     arvore.inserir(-2)
 
     # print( arvore.altura(arvore.raiz.esquerda))
-    print(arvore.min())
-    print(arvore.max())
+    # print(arvore.min())
+    # print(arvore.max())
+    arvore.remover(1)
 
-    # arvore.exibir_arvore_tkinter()
+    arvore.exibir_arvore_tkinter()
