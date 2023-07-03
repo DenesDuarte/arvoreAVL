@@ -17,7 +17,52 @@ class AVL:
             nodo.esquerda = self._inserir(nodo.esquerda, valor)    
         elif valor > nodo.valor:
             nodo.direita = self._inserir(nodo.direita, valor)
+        # return nodo
+    
+        # Atualizar o fator de balanceamento.
+        balanceamento = self.fatorBalanceamento(nodo)
+        print('Chave {}, Fator de balanceamento: {}\n'.format(valor.key,balanceamento))
+        
+        # Rotação Simples à Direita
+        if balanceamento > 1 and valor.raiz < nodo.filho_da_esquerda.valor:
+            return self.rotaDireita(nodo)
+        # Rotação Simples à ESquerda.
+        if balanceamento < -1 and valor.raiz > nodo.filho_da_direita.valor:
+            return self.rotaEsquerda(nodo)
+        # Rotação Dupla à Direita.
+        if balanceamento > 1 and valor.raiz > nodo.filho_da_esquerda.valor:
+            nodo.filho_da_esquerda = self.rotaEsquerda(nodo.filho_da_esquerda )
+            return self.rotaDireita(nodo)
+        # Rotação Dupla à Esquerda.
+        if balanceamento < -1 and valor.raiz < nodo.filho_da_direita.valor:
+            nodo.filho_da_direita = self.rotaDireita(nodo.filho_da_direita)
+            return self.rotaEsquerda(nodo)
         return nodo
+        
+    # Calculo do Fator de Balanceamento.
+    def fatorBalanceamento (self, raiz):
+        if raiz != None:
+            return self.altura(raiz.filho_da_esquerda) - self.altura(raiz.filho_da_direita)
+        else:
+            return 0
+        
+    # Rotação Simples à Direita
+    def rotaDireita (self, raiz):
+        aux = raiz.filho_da_esquerda
+        raiz.filho_da_esquerda = aux.filho_da_direita
+        aux.filho_da_direita = raiz
+        raiz.altura = 1 + max(self.altura(raiz.filho_da_esquerda), self.altura(raiz.filho_da_direita))
+        aux.altura = 1 + max(self.altura(aux.filho_da_esquerda), self.altura(aux.filho_da_direita))
+        return aux
+    
+    # Rotação Simples à Esquerda
+    def rotaEsquerda (self, raiz):
+        aux = raiz.filho_da_direita
+        raiz.filho_da_direita = aux.filho_da_esquerda
+        aux.filho_da_esquerda = raiz
+        raiz.altura = 1 + max(self.altura(raiz.filho_da_esquerda), self.altura(raiz.filho_da_direita))
+        aux.altura = 1 + max(self.altura(aux.filho_da_esquerda), self.altura(aux.filho_da_direita))
+        return aux
     
     def altura(self, nodo = None):
         if nodo is None:
@@ -84,4 +129,4 @@ if __name__ == "__main__":
     print(arvore.min())
     print(arvore.max())
 
-    # arvore.exibir_arvore_tkinter()
+    arvore.exibir_arvore_tkinter()
